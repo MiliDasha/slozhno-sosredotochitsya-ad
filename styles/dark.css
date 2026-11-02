@@ -1,4 +1,15 @@
-body.theme-dark { color-scheme: dark; }
-@media (prefers-color-scheme: dark) {
-  body.theme-auto { color-scheme: dark; }
+:root.theme-dark {
+  --text-color: #f1b2ce;
+  --background-color: #000028;
+  --accent-color: #ff0070;
+  --heading-color: #db00ff;
+  --section-heading-color: #ff0070;
+  --decor-text-color: #000028;
+  --menu-color: #ff0070;
+  --menu-hover-color: rgb(255 0 112 / 0.4);
+  --background-image: url("../images/cover-image-dark.png");
+  color-scheme: dark;
+}
+.theme-dark .page .header__rec {
+  display: block;
 }
