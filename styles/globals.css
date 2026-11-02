@@ -15,7 +15,11 @@ h2,
 h3,
 h4,
 h5,
-h6,
+h6 {
+  margin: 0;
+  font-size: inherit;
+}
+
 p {
   margin: 0;
 }
@@ -34,27 +38,10 @@ picture {
 button,
 a {
   color: currentColor;
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-}
-
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-size: inherit;
-}
-button,
-a {
+  font: inherit;
   -webkit-tap-highlight-color: transparent;
 }
-button {
-  font: inherit;
-}
+
 img {
   display: block;
   max-inline-size: 100%;
