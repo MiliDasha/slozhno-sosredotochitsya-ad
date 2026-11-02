@@ -1,52 +1,35 @@
-(function initTheme() {
-  const theme = localStorage.getItem('theme');
-  if (theme) {
-    setTheme(theme);
-  }
-})();
-
-document.addEventListener('DOMContentLoaded', () => {
-  const currentTheme = [...document.documentElement.classList]
-    .find((cn) => cn.startsWith('theme-'))
-    ?.replace('theme-', '');
-  const themeButtons = [
-    ...document.querySelectorAll('.header__theme-menu-button'),
-  ];
-  setActiveButton(themeButtons, currentTheme);
-
-  themeButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      const chosenTheme = [...button.classList]
-        .find((cn) => cn.includes('_type_'))
-        .split('_type_')[1];
-      setTheme(chosenTheme);
-      setActiveButton(themeButtons, chosenTheme);
-    });
-  });
-});
+const themeButtons = document.querySelectorAll('.header__theme-menu-button');
+const allowedThemes = ['light', 'dark', 'auto'];
 
 function setTheme(theme) {
-  document.documentElement.className = '';
-  document.documentElement.classList.add(`theme-${theme}`);
-  localStorage.setItem('theme', theme);
+  const selectedTheme = allowedThemes.includes(theme) ? theme : 'auto';
+  document.body.classList.remove('theme-light', 'theme-dark', 'theme-auto');
+  document.body.classList.add(`theme-${selectedTheme}`);
+  themeButtons.forEach((button) => {
+    const active = button.classList.contains(`header__theme-menu-button_type_${selectedTheme}`);
+    button.classList.toggle('header__theme-menu-button_active', active);
+    button.disabled = active;
+    button.setAttribute('aria-pressed', String(active));
+  });
 }
 
-function setActiveButton(buttonsArray, theme) {
-  buttonsArray.forEach((button) => {
-    button.classList.remove('header__theme-menu-button_active');
-    button.removeAttribute('disabled');
-  });
-  const target = buttonsArray.find((button) =>
-    button.classList.contains(`header__theme-menu-button_type_${theme}`)
-  );
-  if (target) {
-    target.classList.add('header__theme-menu-button_active');
-    target.setAttribute('disabled', true);
-  } else {
-    const autoButton = document.querySelector(
-      '.header__theme-menu-button_type_auto'
-    );
-    autoButton.classList.add('header__theme-menu-button_active');
-    autoButton.setAttribute('disabled', true);
-  }
+let savedTheme = 'auto';
+try {
+  savedTheme = localStorage.getItem('theme') || 'auto';
+} catch {
+
 }
+setTheme(savedTheme);
+
+themeButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    const themeClass = [...button.classList].find((name) => name.includes('_type_'));
+    const chosenTheme = themeClass.split('_type_')[1];
+    setTheme(chosenTheme);
+    try {
+      localStorage.setItem('theme', chosenTheme);
+    } catch {
+      
+    }
+  });
+});
